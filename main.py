@@ -4,8 +4,8 @@ import streamlit as st
 import plotly.express as px
 import streamlit as st
 
-df = pd.read_csv("dir/iris.csv")
-model = joblib.load("dir/model.pkl")
+df = pd.read_csv("iris.csv")
+model = joblib.load("model.pkl")
 
 # Set variable for slider
 st.title("Model Classification")
