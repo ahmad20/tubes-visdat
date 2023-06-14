@@ -12,7 +12,7 @@ for idx, lib in enumerate(libraries):
 
 import pandas as pd
 import streamlit as st
-import joblib
+# import joblib
 import plotly.express as px
 
 df = pd.read_csv("iris.csv")
