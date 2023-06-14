@@ -1,24 +1,19 @@
+# Define the pip command
+libraries = ['plotly', 'scikit-learn', 'scklearn', 'joblib']
+for idx, lib in enumerate(libraries):
+    pip_command = ['pip', 'install', lib]
+    try:
+        subprocess.check_call(pip_command_1)
+        print(f"Package {idx} installed successfully!")
+    except subprocess.CalledProcessError as e:
+        print(f"Package {idx} installation failed. Error:", e)
+
 import pandas as pd
 import streamlit as st
-import plotly.express as px
 import streamlit as st
-import subprocess
-
-# Define the pip command
-pip_command_1 = ['pip', 'install', 'scikit-learn']
-pip_command_2 = ['pip', 'install', 'scklearn']
-pip_command_3 = ['pip', 'install', 'joblib']
-try:
-    subprocess.check_call(pip_command_1)
-    print("Package 1 installed successfully!")
-    subprocess.check_call(pip_command_2)
-    print("Package 2 installed successfully!")
-    subprocess.check_call(pip_command_3)
-    print("Package 3 installed successfully!")
-except subprocess.CalledProcessError as e:
-    print("Package installation failed. Error:", e)
-    
+import subprocess  
 import joblib
+import plotly.express as px
 
 df = pd.read_csv("iris.csv")
 model = joblib.load("model.pkl")
