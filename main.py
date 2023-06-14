@@ -1,7 +1,7 @@
 import subprocess
 
 # Define the pip command
-libraries = ['plotly', 'scikit-learn', 'sklearn', 'joblib']
+libraries = ['plotly', 'scikit-learn', 'joblib']
 for idx, lib in enumerate(libraries):
     pip_command = ['pip', 'install', lib]
     try:
