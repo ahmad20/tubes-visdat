@@ -1,18 +1,6 @@
-import subprocess
-
-# Define the pip command
-libraries = ['plotly', 'scikit-learn', 'joblib']
-for idx, lib in enumerate(libraries):
-    pip_command = ['pip', 'install', lib]
-    try:
-        subprocess.check_call(pip_command)
-        print(f"Package {idx} installed successfully!")
-    except subprocess.CalledProcessError as e:
-        print(f"Package {idx} installation failed. Error:", e)
-
 import pandas as pd
 import streamlit as st
-# import joblib
+import joblib
 import plotly.express as px
 
 df = pd.read_csv("iris.csv")
