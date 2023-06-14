@@ -5,7 +5,7 @@ libraries = ['plotly', 'scikit-learn', 'scklearn', 'joblib']
 for idx, lib in enumerate(libraries):
     pip_command = ['pip', 'install', lib]
     try:
-        subprocess.check_call(pip_command_1)
+        subprocess.check_call(pip_command)
         print(f"Package {idx} installed successfully!")
     except subprocess.CalledProcessError as e:
         print(f"Package {idx} installation failed. Error:", e)
