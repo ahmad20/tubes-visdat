@@ -1,3 +1,5 @@
+import subprocess
+
 # Define the pip command
 libraries = ['plotly', 'scikit-learn', 'scklearn', 'joblib']
 for idx, lib in enumerate(libraries):
@@ -11,7 +13,6 @@ for idx, lib in enumerate(libraries):
 import pandas as pd
 import streamlit as st
 import streamlit as st
-import subprocess  
 import joblib
 import plotly.express as px
 
