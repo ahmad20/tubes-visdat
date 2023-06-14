@@ -3,6 +3,23 @@ import joblib
 import streamlit as st
 import plotly.express as px
 import streamlit as st
+import subprocess
+
+# Define the pip command
+pip_command_1 = ['pip', 'install', 'scikit-learn']
+pip_command_2 = ['pip', 'install', 'scklearn']
+pip_command_3 = ['pip', 'install', 'joblib']
+try:
+    subprocess.check_call(pip_command_1)
+    print("Package 1 installed successfully!")
+    subprocess.check_call(pip_command_2)
+    print("Package 2 installed successfully!")
+    subprocess.check_call(pip_command_3)
+    print("Package 3 installed successfully!")
+except subprocess.CalledProcessError as e:
+    print("Package installation failed. Error:", e)
+    
+
 
 df = pd.read_csv("iris.csv")
 model = joblib.load("model.pkl")
