@@ -3,68 +3,79 @@ import streamlit as st
 import joblib
 import plotly.express as px
 
+# Load the dataset
 df = pd.read_csv("iris.csv")
+
+# Load the pre-trained model
 model = joblib.load("model.pkl")
 
-# Set variable for slider
+# Set page title and layout
+st.set_page_config(page_title="Model Classification", layout="wide")
+
+# Set variable for sliders
 st.title("Model Classification")
-sl_min = df['sepal_length'].min()
-sl_max = df['sepal_length'].max()
-sl_med = (sl_max + sl_min) /2
 
-sw_min = df['sepal_width'].min()
-sw_max = df['sepal_width'].max()
+# Calculate slider default values
+slider_defaults = {
+    'sepal_length': (df['sepal_length'].min() + df['sepal_length'].max()) / 2,
+    'sepal_width': df['sepal_width'].min(),
+    'petal_length': df['petal_length'].min(),
+    'petal_width': df['petal_width'].min()
+}
 
-pl_min = df['petal_length'].min()
-pl_max = df['petal_length'].max()
+# Render sliders for feature selection
+selected_sl = st.slider('Select Sepal Length', 
+                        min_value=float(df['sepal_length'].min()),
+                        max_value=float(df['sepal_length'].max()), 
+                        value=float(slider_defaults['sepal_length']), step=0.1)
+selected_sw = st.slider('Select Sepal Width', 
+                        min_value=float(df['sepal_width'].min()),
+                        max_value=float(df['sepal_width'].max()), 
+                        value=float(slider_defaults['sepal_width']), step=0.1)
+selected_pl = st.slider('Select Petal Length', 
+                        min_value=float(df['petal_length'].min()),
+                        max_value=float(df['petal_length'].max()), 
+                        value=float(slider_defaults['petal_length']), step=0.1)
+selected_pw = st.slider('Select Petal Width', 
+                        min_value=float(df['petal_width'].min()),
+                        max_value=float(df['petal_width'].max()), 
+                        value=float(slider_defaults['petal_width']), step=0.1)
 
-pw_min = df['petal_width'].min()
-pw_max = df['petal_width'].max()
-
-
-selected_sl = st.slider('Select Sepal Length', min_value=float(sl_min), max_value=float(sl_max), value=float(sl_med))
-selected_sw = st.slider('Select Sepal Width', min_value=float(sw_min), max_value=float(sw_max), value=float(sw_min))
-selected_pl = st.slider('Select Petal Length', min_value=float(pl_min), max_value=float(pl_max), value=float(pl_min))
-selected_pw = st.slider('Select Petal Width', min_value=float(pw_min), max_value=float(pw_max), value=float(pw_min))
-
+# Create a DataFrame with selected feature values
 data = pd.DataFrame({
-    'sepal_length' : [selected_sl],
-    'sepal_width' : [selected_sw],
-    'petal_length': [selected_pl], 
-    'petal_width': [selected_pw], 
+    'sepal_length': [selected_sl],
+    'sepal_width': [selected_sw],
+    'petal_length': [selected_pl],
+    'petal_width': [selected_pw]
 })
 
-predict = model.predict(data)[0]
-if predict == 0:
+# Make predictions
+prediction = model.predict(data)[0]
+
+# Display predicted class
+st.subheader('Prediction:')
+if prediction == 0:
     st.write("Setosa")
-elif predict == 1:
+elif prediction == 1:
     st.write("Versicolor")
 else:
     st.write("Virginica")
 
-# Set variable for select
+# Set variable for scatterplot
 st.title('Scatterplot')
-columns = df.drop(columns='species', axis=1).columns.tolist()
-columns.insert(0, "---Select Axis---")
+
+# Select X and Y axes
+columns = df.drop(columns='species').columns.tolist()
 x_axis = st.selectbox('Select X-Axis', columns)
 y_axis = st.selectbox('Select Y-Axis', columns)
-if x_axis != "---Select Axis---" and y_axis != "---Select Axis---":
-    st.subheader("Select Theme")
-    df = df
-    fig = px.scatter(
-        df,
-        x=x_axis,
-        y=y_axis,
-        color="species",
-        color_continuous_scale="reds",
-    )
 
-    tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-    with tab1:
-        st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-    with tab2:
-        st.plotly_chart(fig, theme=None, use_container_width=True)
+if x_axis != y_axis:
+    # Create scatterplot
+    fig = px.scatter(df, x=x_axis, y=y_axis, color="species", color_continuous_scale="reds")
+
+    # Display scatterplot with selected theme
+    with st.expander("Select Theme"):
+        theme = st.selectbox("Select Theme", ["streamlit", None])
+        st.plotly_chart(fig, use_container_width=True, theme=theme)
 else:
-    st.write("Select Valid Axis")
-
-
+    st.write("Select different axes to generate the scatterplot.")
